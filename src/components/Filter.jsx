@@ -10,7 +10,7 @@ dayjs.extend(isBetween);
 
 const Filter = ({ applicationTypes, actionTypes, setFilterData, data }) => {
   const [selectedApplicationOption, setSelectedApplicationOption] =
-    useState("ADD_POA");
+    useState(null);
   const [selectedActionOption, setSelectedActionOption] = useState(null);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");

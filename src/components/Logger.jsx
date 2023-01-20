@@ -3,51 +3,35 @@ import Filter from "./Filter";
 import Table from "./Table";
 
 const url = "https://run.mocky.io/v3/a2fbc23e-069e-4ba5-954c-cd910986f40f";
+
 const Logger = () => {
   const [data, setData] = useState(null);
   const [filterData, setFilterData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const getResponse = async () => {
-    setError(null);
-    setIsLoading(true);
-
-    try {
-      const response = await fetch(url);
-      const json = await response.json();
-      setData(json?.result?.auditLog);
-      setFilterData(json?.result?.auditLog);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    getResponse();
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(url);
+        const json = await res.json();
+        setData(json?.result?.auditLog);
+        setFilterData(json?.result?.auditLog);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
-  const applicationTypes = [
-    ...new Set(data?.map((entry) => entry.applicationType)),
-  ].filter((elements) => {
-    return elements !== null;
-  });
-  const actionTypes = [
-    ...new Set(data?.map((entry) => entry.actionType)),
-  ].filter((elements) => {
-    return elements !== null;
-  });
-  let applicationTypesOptions = [],
-    actionTypesOptions = [];
+  const applicationTypes = [...new Set(data?.map(({ applicationType }) => applicationType))].filter(Boolean);
+  const actionTypes = [...new Set(data?.map(({ actionType }) => actionType))].filter(Boolean);
 
-  applicationTypesOptions = applicationTypes.map((item, index) => {
-    return { value: item, label: item };
-  });
-  actionTypesOptions = actionTypes.map((item, index) => {
-    return { value: item, label: item };
-  });
+  const applicationTypesOptions = applicationTypes.map((item) => ({ value: item, label: item }));
+  const actionTypesOptions = actionTypes.map((item) => ({ value: item, label: item }));
 
   return (
     <>

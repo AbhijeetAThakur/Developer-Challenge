@@ -52,17 +52,21 @@ function Table({ filterData }) {
           </tr>
         </thead>
         <tbody>
-          {paginatedData.length > 0
-            ? paginatedData.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.logId}</td>
-                  <td>{item.applicationType}</td>
-                  <td>{item.applicationId}</td>
-                  <td>{item.actionType}</td>
-                  <td>{item.creationTimestamp}</td>
-                </tr>
-              ))
-            : "No Record Found"}
+          {paginatedData.length > 0 ? (
+            paginatedData.map((item, index) => (
+              <tr key={index}>
+                <td>{item.logId}</td>
+                <td>{item.applicationType}</td>
+                <td>{item.applicationId}</td>
+                <td>{item.actionType}</td>
+                <td>{item.creationTimestamp}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={5}>No Record Found</td>
+            </tr>
+          )}
         </tbody>
       </table>
 
