@@ -1,0 +1,59 @@
+.App {
+  margin: 2rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  width: 20%;
+}
+
+th {
+  width: 20%;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.sorting-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+.sorting-arrow.asc::before {
+  content: "";
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+}
+
+.sorting-arrow.desc::before {
+  content: "";
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid black;
+  transform: rotate(180deg);
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: flex-end; /* NEW */
+}
+.inputHeight {
+  height: calc(3.5rem + 2px);
+}
+.inputWidth {
+  max-width: 20% !important;
+}
