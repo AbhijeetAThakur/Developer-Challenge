@@ -23,7 +23,16 @@ function Table({ filterData, currentPage, setCurrentPage }) {
     }
   });
 
-  const pages = filterData.length === 0 ? 1 : Math.ceil(filterData.length / perPage);
+  const getSortDirection = (id) => {
+    let direction = "fa fa-sort";
+    if (id === sortBy) {
+      direction = sortAscending ? "fa fa-sort-up" : "fa fa-sort-down";
+    }
+    return direction;
+  };
+
+  const pages =
+    filterData.length === 0 ? 1 : Math.ceil(filterData.length / perPage);
   const paginatedData = sortedData.slice(
     (currentPage - 1) * perPage,
     currentPage * perPage
@@ -35,19 +44,22 @@ function Table({ filterData, currentPage, setCurrentPage }) {
         <thead>
           <tr>
             <th onClick={() => handleSort("logId")}>
-              Log ID <i className="fa fa-sort"></i>
+              Log ID <i className={getSortDirection("logId")}></i>
             </th>
             <th onClick={() => handleSort("applicationType")}>
-              Application Type <i className="fa fa-sort"></i>
+              Application Type{" "}
+              <i className={getSortDirection("applicationType")}></i>
             </th>
             <th onClick={() => handleSort("applicationId")}>
-              Application ID <i className="fa fa-sort"></i>
+              Application ID{" "}
+              <i className={getSortDirection("applicationId")}></i>
             </th>
             <th onClick={() => handleSort("actionType")}>
-              Action Type <i className="fa fa-sort"></i>
+              Action Type <i className={getSortDirection("actionType")}></i>
             </th>
             <th onClick={() => handleSort("creationTimestamp")}>
-              Date/Time <i className="fa fa-sort"></i>
+              Date/Time{" "}
+              <i className={getSortDirection("creationTimestamp")}></i>
             </th>
           </tr>
         </thead>
@@ -63,7 +75,9 @@ function Table({ filterData, currentPage, setCurrentPage }) {
           ))}
         </tbody>
       </table>
-      {paginatedData.length === 0 &&  ( <div className="text-center"> No Record Found </div>)}
+      {paginatedData.length === 0 && (
+        <div className="text-center"> No Record Found </div>
+      )}
       <div
         className="d-flex justify-content-center align-items-center"
         style={{ marginTop: "25px", width: "100%" }}

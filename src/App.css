@@ -16,6 +16,7 @@ td {
 
 th {
   width: 20%;
+  cursor: pointer;
 }
 
 tr:nth-child(even) {
