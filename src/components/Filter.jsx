@@ -8,29 +8,24 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 dayjs.extend(isBetween);
 
-const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrentPage }) => {
+const Filter = ({
+  applicationTypes,
+  actionTypes,
+  setFilterData,
+  data,
+  setCurrentPage,
+}) => {
   const [selectedApplicationOption, setSelectedApplicationOption] =
     useState(null);
   const [selectedActionOption, setSelectedActionOption] = useState(null);
   const [fromDate, setFromDate] = useState("");
+  const [logID, setLogID] = useState("");
+  const [applicationId, setApplicationId] = useState("");
   const [toDate, setToDate] = useState("");
   const [isClearable] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
   const selectInputApplicationRef = useRef();
   const selectInputActionRef = useRef();
-  const defaultValues = {
-    logID: "",
-    applicationId: "",
-  };
-  const [formValues, setFormValues] = useState(defaultValues);
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
 
   const createParams = (formData) => {
     const searchParams = {};
@@ -51,7 +46,22 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrent
     const formData = new FormData(event.target);
     const urlParams = createParams(formData);
     setSearchParams(urlParams);
-    setCurrentPage(1)
+    setCurrentPage(1);
+  };
+
+  const setOptions = (applicationType, actionType, logID, applicationId) => {
+    applicationType &&
+      selectInputApplicationRef.current.setValue({
+        label: applicationType,
+        value: applicationType,
+      });
+    actionType &&
+      selectInputActionRef.current.setValue({
+        label: actionType,
+        value: actionType,
+      });
+    setLogID(logID);
+    setApplicationId(applicationId);
   };
 
   const filteredData = useCallback(() => {
@@ -61,7 +71,7 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrent
     const fromDate = searchParams.get("fromDate") || "";
     const toDate = searchParams.get("toDate") || "";
     const applicationId = searchParams.get("applicationId") || "";
-
+    setOptions(applicationType, actionType, logID, applicationId);
     return data?.length > 0
       ? data
           ?.filter((tableData) =>
@@ -124,10 +134,10 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrent
     setFromDate("");
     setToDate("");
     setSearchParams({});
-    setFormValues(defaultValues);
-    setCurrentPage(1)
+    setLogID("");
+    setApplicationId("");
+    setCurrentPage(1);
   };
-
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
       <div className="wrapper mb-3">
@@ -139,8 +149,8 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrent
             name="logID"
             id="logID"
             autoComplete="off"
-            value={formValues.logID}
-            onChange={handleChange}
+            value={logID}
+            onChange={(e) => setLogID(e.target.value)}
           />
         </div>
 
@@ -152,8 +162,8 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrent
             name="applicationId"
             id="applicationId"
             autoComplete="off"
-            value={formValues.applicationId}
-            onChange={handleChange}
+            value={applicationId}
+            onChange={(e) => setApplicationId(e.target.value)}
           />
         </div>
 
