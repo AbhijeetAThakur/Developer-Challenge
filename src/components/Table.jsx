@@ -75,12 +75,14 @@ function Table({ filterData }) {
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
+          className="ml-2"
         >
           Previous
         </button>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={currentPage === pages}
+          className="ml-2"
         >
           Next
         </button>
