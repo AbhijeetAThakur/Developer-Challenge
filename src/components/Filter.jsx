@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
 dayjs.extend(isBetween);
 
-const Filter = ({ applicationTypes, actionTypes, setFilterData, data }) => {
+const Filter = ({ applicationTypes, actionTypes, setFilterData, data, setCurrentPage }) => {
   const [selectedApplicationOption, setSelectedApplicationOption] =
     useState(null);
   const [selectedActionOption, setSelectedActionOption] = useState(null);
@@ -51,6 +51,7 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data }) => {
     const formData = new FormData(event.target);
     const urlParams = createParams(formData);
     setSearchParams(urlParams);
+    setCurrentPage(1)
   };
 
   const filteredData = useCallback(() => {
@@ -124,6 +125,7 @@ const Filter = ({ applicationTypes, actionTypes, setFilterData, data }) => {
     setToDate("");
     setSearchParams({});
     setFormValues(defaultValues);
+    setCurrentPage(1)
   };
 
   return (

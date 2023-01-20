@@ -9,6 +9,7 @@ const Logger = () => {
   const [filterData, setFilterData] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,11 +28,21 @@ const Logger = () => {
     fetchData();
   }, []);
 
-  const applicationTypes = [...new Set(data?.map(({ applicationType }) => applicationType))].filter(Boolean);
-  const actionTypes = [...new Set(data?.map(({ actionType }) => actionType))].filter(Boolean);
+  const applicationTypes = [
+    ...new Set(data?.map(({ applicationType }) => applicationType)),
+  ].filter(Boolean);
+  const actionTypes = [
+    ...new Set(data?.map(({ actionType }) => actionType)),
+  ].filter(Boolean);
 
-  const applicationTypesOptions = applicationTypes.map((item) => ({ value: item, label: item }));
-  const actionTypesOptions = actionTypes.map((item) => ({ value: item, label: item }));
+  const applicationTypesOptions = applicationTypes.map((item) => ({
+    value: item,
+    label: item,
+  }));
+  const actionTypesOptions = actionTypes.map((item) => ({
+    value: item,
+    label: item,
+  }));
 
   return (
     <>
@@ -40,12 +51,13 @@ const Logger = () => {
         actionTypes={actionTypesOptions}
         setFilterData={setFilterData}
         data={data}
+        setCurrentPage={setCurrentPage}
       />
       <div className="d-flex justify-content-center">
         {error && <p>{error.message}</p>}
         {isLoading && <p>Loading...</p>}
       </div>
-      {data && <Table isLoading={isLoading} filterData={filterData} />}
+      {data && <Table currentPage={currentPage} setCurrentPage={setCurrentPage} isLoading={isLoading} filterData={filterData} />}
     </>
   );
 };
