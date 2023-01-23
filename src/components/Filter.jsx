@@ -49,29 +49,58 @@ const Filter = ({
     setCurrentPage(1);
   };
 
-  const setOptions = (applicationType, actionType, logID, applicationId) => {
-    applicationType &&
-      selectInputApplicationRef.current.setValue({
-        label: applicationType,
-        value: applicationType,
-      });
-    actionType &&
-      selectInputActionRef.current.setValue({
-        label: actionType,
-        value: actionType,
-      });
+  const setOptions = (
+    applicationType,
+    actionType,
+    logID,
+    applicationId,
+    fromDateUrl,
+    toDateUrl
+  ) => {
+    applicationType
+      ? selectInputApplicationRef.current.setValue({
+          label: applicationType,
+          value: applicationType,
+        })
+      : selectInputApplicationRef.current.setValue(null);
+    actionType
+      ? selectInputActionRef.current.setValue({
+          label: actionType,
+          value: actionType,
+        })
+      : selectInputActionRef.current.setValue(null);
     setLogID(logID);
     setApplicationId(applicationId);
+    if (fromDateUrl) {
+      const from = Date.parse(fromDateUrl);
+      setFromDate(new Date(from));
+    } else {
+      setFromDate(null);
+    }
+    if (toDateUrl) {
+      const to = Date.parse(toDateUrl);
+      setToDate(new Date(to));
+    } else {
+      setToDate(null);
+    }
   };
 
   const filteredData = useCallback(() => {
     const logID = searchParams.get("logID") || "";
     const applicationType = searchParams.get("applicationType") || "";
     const actionType = searchParams.get("actionType") || "";
-    const fromDate = searchParams.get("fromDate") || "";
-    const toDate = searchParams.get("toDate") || "";
+    const fromDateUrl = searchParams.get("fromDate") || "";
+    const toDateUrl = searchParams.get("toDate") || "";
     const applicationId = searchParams.get("applicationId") || "";
-    setOptions(applicationType, actionType, logID, applicationId);
+
+    setOptions(
+      applicationType,
+      actionType,
+      logID,
+      applicationId,
+      fromDateUrl,
+      toDateUrl
+    );
     return data?.length > 0
       ? data
           ?.filter((tableData) =>
@@ -93,20 +122,20 @@ const Filter = ({
               : tableData
           )
           .filter((tableData) => {
-            return fromDate && !toDate
+            return fromDateUrl && !toDateUrl
               ? tableData?.creationTimestamp
                   ?.toString()
-                  .includes(dayjs(fromDate).format("YYYY-MM-DD"))
+                  .includes(dayjs(fromDateUrl).format("YYYY-MM-DD"))
               : tableData;
           })
           .filter((tableData) => {
-            if (fromDate && toDate) {
+            if (fromDateUrl && toDateUrl) {
               const currentDate = dayjs(
                 tableData?.creationTimestamp?.toString()
               ).format("YYYY-MM-DD");
               return dayjs(currentDate).isBetween(
-                dayjs(fromDate).subtract(1, 'day').format("YYYY-MM-DD"),
-                dayjs(toDate).add(1, 'day').format("YYYY-MM-DD")
+                dayjs(fromDateUrl).subtract(1, "day").format("YYYY-MM-DD"),
+                dayjs(toDateUrl).add(1, "day").format("YYYY-MM-DD")
               );
             } else {
               return tableData;
