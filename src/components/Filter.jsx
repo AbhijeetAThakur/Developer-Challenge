@@ -105,8 +105,8 @@ const Filter = ({
                 tableData?.creationTimestamp?.toString()
               ).format("YYYY-MM-DD");
               return dayjs(currentDate).isBetween(
-                dayjs(fromDate).format("YYYY-MM-DD"),
-                dayjs(toDate).format("YYYY-MM-DD")
+                dayjs(fromDate).subtract(1, 'day').format("YYYY-MM-DD"),
+                dayjs(toDate).add(1, 'day').format("YYYY-MM-DD")
               );
             } else {
               return tableData;

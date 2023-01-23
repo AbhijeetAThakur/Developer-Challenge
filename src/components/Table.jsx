@@ -13,12 +13,31 @@ function Table({ filterData, currentPage, setCurrentPage }) {
       setSortBy(column);
       setSortAscending(true);
     }
+    setCurrentPage(1);
   };
 
   const sortedData = filterData.sort((a, b) => {
+    // equal items sort equally
+    if (a[sortBy] === b[sortBy]) {
+      return 0;
+    }
+    // otherwise, if we're ascending, lowest sorts first
     if (sortAscending) {
+      if (a[sortBy] === null) {
+        return 1;
+      }
+      if (b[sortBy] === null) {
+        return -1;
+      }
       return a[sortBy] > b[sortBy] ? 1 : -1;
     } else {
+      // if descending, highest sorts first
+      if (a[sortBy] === null) {
+        return -1;
+      }
+      if (b[sortBy] === null) {
+        return 1;
+      }
       return a[sortBy] < b[sortBy] ? 1 : -1;
     }
   });
